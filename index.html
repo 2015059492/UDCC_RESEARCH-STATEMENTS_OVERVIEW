@@ -1,0 +1,456 @@
+<!--
+Interactive Research Statement Hourglass — Canvas body block
+Designed to sit UNDER the existing Canvas page heading.
+No replacement page title or hero banner is included.
+-->
+
+<style>
+/* Everything is scoped to .rs-hourglass-block to avoid changing the surrounding Canvas page. */
+.rs-hourglass-block {
+  --rs-blue:#00539F;
+  --rs-blue-dark:#003C71;
+  --rs-gold:#FFD200;
+  --rs-light-blue:#00A0DF;
+  --rs-gray:#BDBDBD;
+  --rs-ink:#223548;
+  --rs-muted:#5B6B7C;
+  --rs-line:#D7E1EC;
+  --rs-soft:#F7FBFF;
+  --rs-white:#FFFFFF;
+  color:var(--rs-ink);
+  font-family:Arial, Helvetica, sans-serif;
+  line-height:1.5;
+  width:100%;
+}
+
+.rs-hourglass-block * { box-sizing:border-box; }
+
+.rs-hourglass-instruction {
+  margin:0 0 16px;
+  padding:8px 12px;
+  border:0;
+  border-radius:0;
+  background:var(--rs-blue);
+  color:#FFFFFF;
+  font-size:1.05rem;
+}
+.rs-hourglass-instruction strong { color:#FFFFFF; }
+
+.rs-hourglass-layout {
+  display:grid;
+  grid-template-columns:minmax(330px, 430px) minmax(0, 1fr);
+  gap:22px;
+  align-items:start;
+}
+
+.rs-hourglass-card {
+  background:var(--rs-white);
+  border:1px solid var(--rs-line);
+  border-radius:14px;
+}
+
+.rs-hourglass-visual {
+  padding:18px;
+}
+
+.rs-hourglass-visual h3 {
+  margin:0 0 6px;
+  color:var(--rs-blue-dark);
+  font-size:1.08rem;
+}
+
+.rs-hourglass-sub {
+  color:var(--rs-muted);
+  font-size:.9rem;
+  margin-bottom:14px;
+}
+
+.rs-hourglass-shape {
+  width:100%;
+  max-width:360px;
+  margin:8px auto 0;
+  display:grid;
+  gap:7px;
+}
+
+.rs-hg-seg {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:12px 16px;
+  font-weight:800;
+  cursor:pointer;
+  border:3px solid transparent;
+  transition:transform .16s ease, opacity .16s ease, box-shadow .16s ease;
+  min-height:70px;
+}
+
+.rs-hg-seg:hover {
+  transform:translateY(-1px);
+}
+
+.rs-hg-seg:focus-visible {
+  outline:4px solid #88C8FF;
+  outline-offset:3px;
+}
+
+.rs-hg-seg.active {
+  border-color:var(--rs-gold);
+  box-shadow:0 0 0 4px rgba(0,83,159,.12);
+  transform:scale(1.015);
+  z-index:2;
+}
+
+.rs-hg-seg.dim {
+  opacity:.42;
+}
+
+.rs-hg-seg small {
+  display:block;
+  font-weight:700;
+  font-size:.8rem;
+  margin-top:3px;
+}
+
+/* Official UD palette applied to the hourglass. */
+.rs-hg-general {
+  background:var(--rs-blue);
+  color:#fff;
+  border-radius:28px 28px 10px 10px;
+}
+.rs-hg-general small { color:#EAF4FF; }
+
+.rs-hg-specific {
+  background:var(--rs-light-blue);
+  color:#fff;
+  clip-path:polygon(0 0,100% 0,92% 100%,8% 100%);
+}
+
+.rs-hg-approach {
+  background:var(--rs-gold);
+  color:var(--rs-blue-dark);
+  clip-path:polygon(8% 0,92% 0,63% 100%,37% 100%);
+}
+
+.rs-hg-findings {
+  background:var(--rs-blue-dark);
+  color:#fff;
+  clip-path:polygon(37% 0,63% 0,92% 100%,8% 100%);
+}
+
+.rs-hg-impact {
+  background:var(--rs-light-blue);
+  color:#fff;
+  clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);
+}
+
+.rs-hg-vision {
+  background:var(--rs-blue);
+  color:#fff;
+  border-radius:10px 10px 28px 28px;
+  min-height:78px;
+}
+.rs-hg-vision small { color:#EAF4FF; }
+
+.rs-hourglass-click-note {
+  margin-top:13px;
+  text-align:center;
+  font-size:.88rem;
+  color:#506272;
+}
+
+.rs-hourglass-detail {
+  min-height:500px;
+  overflow:hidden;
+}
+
+.rs-hourglass-placeholder {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  min-height:500px;
+  color:#607283;
+  padding:28px;
+  background:
+    radial-gradient(circle at top right, rgba(0,83,159,.06), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(255,210,0,.15), transparent 28%);
+}
+
+.rs-hourglass-placeholder-box {
+  max-width:420px;
+}
+
+.rs-hourglass-placeholder-icon {
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  margin:0 auto 14px;
+  display:grid;
+  place-items:center;
+  background:#EEF6FC;
+  color:var(--rs-blue);
+  border:2px solid #D7E8FA;
+  font-size:1.65rem;
+  font-weight:900;
+}
+
+.rs-hourglass-placeholder strong {
+  display:block;
+  color:var(--rs-blue-dark);
+  font-size:1.05rem;
+}
+
+.rs-hourglass-content {
+  display:none;
+}
+
+.rs-hourglass-detail-head {
+  padding:17px 19px 15px;
+  background:linear-gradient(180deg,#F7FBFF,#EEF6FC);
+  border-bottom:1px solid var(--rs-line);
+}
+
+.rs-hourglass-kicker {
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:800;
+  color:var(--rs-blue);
+  font-size:.74rem;
+  margin-bottom:5px;
+}
+
+.rs-hourglass-detail-title {
+  margin:0;
+  color:var(--rs-blue-dark);
+  font-size:1.3rem;
+  line-height:1.2;
+}
+
+.rs-hourglass-detail-body {
+  padding:19px;
+}
+
+.rs-hourglass-detail-body p {
+  margin:0 0 14px;
+  color:#3F5163;
+  line-height:1.6;
+}
+
+.rs-hourglass-detail-body ul {
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:10px;
+}
+
+.rs-hourglass-detail-body li {
+  display:flex;
+  gap:10px;
+  color:#304355;
+  line-height:1.5;
+}
+
+.rs-hourglass-detail-body li::before {
+  content:"✓";
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:#FFF8D5;
+  border:1px solid #E3C54C;
+  color:var(--rs-blue-dark);
+  display:grid;
+  place-items:center;
+  font-size:.76rem;
+  font-weight:900;
+  flex:0 0 21px;
+  margin-top:1px;
+}
+
+@media (max-width:900px) {
+  .rs-hourglass-layout { grid-template-columns:1fr; }
+  .rs-hourglass-detail,
+  .rs-hourglass-placeholder { min-height:auto; }
+}
+
+@media (max-width:600px) {
+  .rs-hourglass-visual { padding:12px; }
+  .rs-hg-seg { min-height:62px; font-size:.92rem; padding:10px 12px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .rs-hg-seg { transition:none; }
+}
+</style>
+
+<div class="rs-hourglass-block" id="rsHourglassBlock">
+  <div class="rs-hourglass-instruction">
+    <strong>Explore the hourglass:</strong>
+    Select a section of the hourglass to learn more.
+  </div>
+
+  <div class="rs-hourglass-layout">
+    <section class="rs-hourglass-card rs-hourglass-visual">
+      <h3>The Hourglass Concept</h3>
+
+      <div class="rs-hourglass-shape">
+        <button type="button" class="rs-hg-seg rs-hg-general" data-key="general">
+          General motivation
+          <small>Something everyone cares about</small>
+        </button>
+
+        <button type="button" class="rs-hg-seg rs-hg-specific" data-key="specific">
+          Specific motivation + problem
+        </button>
+
+        <button type="button" class="rs-hg-seg rs-hg-approach" data-key="approach">
+          How you addressed the problem
+        </button>
+
+        <button type="button" class="rs-hg-seg rs-hg-findings" data-key="findings">
+          What you found
+        </button>
+
+        <button type="button" class="rs-hg-seg rs-hg-impact" data-key="impact">
+          Impact of your work
+        </button>
+
+        <button type="button" class="rs-hg-seg rs-hg-vision" data-key="vision">
+          Research vision
+          <small>Impact on what everyone cares about</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="rs-hourglass-card rs-hourglass-detail" aria-live="polite">
+      <div class="rs-hourglass-placeholder" id="rsPlaceholder">
+        <div class="rs-hourglass-placeholder-box">
+          <div class="rs-hourglass-placeholder-icon">i</div>
+          <strong>Select a section of the hourglass to learn more.</strong>
+        </div>
+      </div>
+
+      <div class="rs-hourglass-content" id="rsContentArea">
+        <div class="rs-hourglass-detail-head">
+          <div class="rs-hourglass-kicker" id="rsKicker"></div>
+          <h3 class="rs-hourglass-detail-title" id="rsTitle"></h3>
+        </div>
+        <div class="rs-hourglass-detail-body">
+          <p id="rsText"></p>
+          <ul id="rsBullets"></ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById("rsHourglassBlock");
+  if (!root) return;
+
+  const content = {
+  general: {
+    kicker: "Top of the hourglass",
+    title: "General motivation",
+    text: "Start with the big picture. Open your research statement with a broad motivation that readers from different areas can understand and care about.",
+    bullets: [
+      "Introduce the wider issue, challenge, or question in your field.",
+      "Help the reader understand why this area matters.",
+      "Set up the context before moving into your specific research focus."
+    ]
+  },
+  specific: {
+    kicker: "Narrowing the focus",
+    title: "Specific motivation + problem",
+    text: "After starting broadly, narrow the discussion to the specific motivation and research problem that your work addresses.",
+    bullets: [
+      "Show the gap, puzzle, or problem your work responds to.",
+      "Connect the broader context to your own research question.",
+      "Make clear what specific issue your work is trying to solve or understand."
+    ]
+  },
+  approach: {
+    kicker: "Entering the narrow center",
+    title: "How you addressed the problem",
+    text: "This is where you explain what you did. Describe the methods, strategies, or line of inquiry you used to address the research problem.",
+    bullets: [
+      "Summarize the approach or methodology clearly.",
+      "Highlight the most important parts of your process.",
+      "Keep the explanation focused on what best demonstrates your contribution."
+    ]
+  },
+  findings: {
+    kicker: "The narrowest point",
+    title: "What you found",
+    text: "Present the key findings or contributions that came out of your work. This is the most specific part of the hourglass.",
+    bullets: [
+      "Share the strongest results or discoveries.",
+      "Emphasize contributions rather than every detail.",
+      "Organize the findings in a way that supports a clear, cohesive story."
+    ]
+  },
+  impact: {
+    kicker: "Widening back out",
+    title: "Impact of your work",
+    text: "After presenting your findings, zoom back out. Explain why your work matters and what broader contribution it makes to the field or beyond.",
+    bullets: [
+      "Show the significance of your findings.",
+      "Connect your work to bigger conversations or applications.",
+      "Help the committee see the broader relevance of your research."
+    ]
+  },
+  vision: {
+    kicker: "Bottom of the hourglass",
+    title: "Research vision",
+    text: "End by looking forward. Show where your work is going next and how your future research connects back to the larger issues introduced at the beginning.",
+    bullets: [
+      "Describe future research directions or agenda.",
+      "Demonstrate forward-thinking and scholarly identity.",
+      "Return to the bigger picture so the statement ends with a strong sense of purpose."
+    ]
+  }
+  };
+
+  const segs = [...root.querySelectorAll(".rs-hg-seg")];
+  const placeholder = root.querySelector("#rsPlaceholder");
+  const contentArea = root.querySelector("#rsContentArea");
+  const kicker = root.querySelector("#rsKicker");
+  const title = root.querySelector("#rsTitle");
+  const text = root.querySelector("#rsText");
+  const bullets = root.querySelector("#rsBullets");
+
+  function openSection(key) {
+    const data = content[key];
+    if (!data) return;
+
+    segs.forEach(seg => {
+      const active = seg.dataset.key === key;
+      seg.classList.toggle("active", active);
+      seg.classList.toggle("dim", !active);
+    });
+
+    kicker.textContent = data.kicker;
+    title.textContent = data.title;
+    text.textContent = data.text;
+
+    bullets.innerHTML = "";
+    data.bullets.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      bullets.appendChild(li);
+    });
+
+    placeholder.style.display = "none";
+    contentArea.style.display = "block";
+  }
+
+  segs.forEach(seg => {
+    seg.addEventListener("click", () => openSection(seg.dataset.key));
+  });
+})();
+</script>
